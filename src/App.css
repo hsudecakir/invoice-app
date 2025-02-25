@@ -1,0 +1,1038 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+
+:root{
+  --01-purple: #7C5DFA;
+  --02-light-puple: #9277FF;
+  --03-very-dark-blue: #1E2139;
+  --04-dark-blue: #252945;
+  --05-very-light-purple: #DFE3FA;
+  --06-gray: #888EB0;
+  --07-grayish-blue: #7E88C3;
+  --08-text-color: #0C0E16;
+  --09-red: #EC5757;
+  --10-red-hover: #FF9797;
+  --11-light-bg: #F8F8FB;
+  --12-black: #141625;
+  --13-header-bg: #373B53;
+  --14-white: #FFFFFF;
+  --15-text-gray: #858BB2;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+  font-family: "League Spartan", serif;
+  background-color: var(--11-light-bg);
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+*{
+  box-sizing: border-box;
+  font-family: "League Spartan", serif;
+  text-decoration: none;
+}
+
+/* mobile css */
+
+/* header css */
+
+.header{
+  background-color: var(--13-header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 24px;
+}
+
+.header a, .header a img{
+  height: 72px;
+}
+
+.header img{
+  cursor: pointer;
+}
+
+.header-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-wrapper span.divider{
+  display: block;
+  height: 72px;
+  width: 1px;
+  background-color: #494E6E;
+}
+
+/* header css */
+
+/* container css */
+
+/* InvoicesContainer css */
+
+.invoices-container, .invoice-details-container{
+  padding: 32px 24px;
+}
+
+.invoices-info-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.invoices-info h2{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 22.08px;
+  letter-spacing: -0.75px;
+  color: var(--08-text-color);
+  margin-bottom: 3px;
+}
+
+.invoices-info p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--06-gray);
+}
+
+.invoices-action-buttons{
+  display: flex;
+  align-items: center;
+  gap: 18.54px;
+}
+
+.filter-btn-container{
+  position: relative;
+}
+
+.filter-btn-container .drop-down-menu{
+  display: none;
+}
+
+.filter-btn-container button{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: right;
+  color: var(--08-text-color);
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.filter-btn-container.active .drop-down-menu{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  z-index: 3;
+  top: 25px;
+  right: -50%;
+  background-color: var(--14-white);
+  width: 132px;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0px 10px 20px 0px #48549F40;
+}
+
+.drop-down-menu label{
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  cursor: pointer;
+}
+
+.drop-down-menu label input{
+  display: none;
+}
+
+.drop-down-menu label span{
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: var(--05-very-light-purple);
+  border: 1px solid var(--05-very-light-purple);
+  border-radius: 2px;
+}
+
+.drop-down-menu label input:checked + span{
+  background-image: url('../images/check-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--01-purple);
+  border: 1px solid var(--01-purple);
+}
+
+.invoices-action-buttons a{
+  text-decoration: none;
+  padding: 6px 15px 6px 6px;
+  background-color: var(--01-purple);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.invoices-action-buttons a span{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--14-white);
+}
+
+.invoices-action-buttons a p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--14-white);
+  text-align: center;
+  position: relative;
+  top: 2px;
+}
+
+.invoice-carts-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoice-cart{
+  border-radius: 8px;
+  background-color: var(--14-white);
+  padding: 25px 22px 22px;
+  cursor: pointer;
+}
+
+.invoice-cart-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.invoice-cart-header p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  text-align: right;
+  color: #858BB2;
+}
+
+.invoice-cart-header p.id, .invoice-detail-container p.id{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+}
+
+.invoice-cart-header p.id span, .invoice-detail-container p.id span{
+  color: #7E88C3;
+}
+
+.invoice-cart-body{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-cart-body-wrapper p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: #888EB0;
+  margin-bottom: 9px;
+}
+
+.invoice-cart-body-wrapper p.price{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  margin-bottom: 0;
+}
+
+.invoice-cart-status{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 6px;
+}
+
+.invoice-cart-status span{
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.invoice-cart-status p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  position: relative;
+  top: 1px;
+}
+
+.invoice-cart-status.paid{
+  background-color: rgba(51, 214, 159, 0.06);
+}
+
+.invoice-cart-status.paid span{
+  background-color: #33D69F;
+}
+
+.invoice-cart-status.paid p{
+  color: #33D69F;
+}
+
+.invoice-cart-status.pending{
+  background-color: rgba(255, 143, 0, 0.06);
+}
+
+.invoice-cart-status.pending span{
+  background-color: #FF8F00;
+}
+
+.invoice-cart-status.pending p{
+  color: #FF8F00;
+}
+
+.invoice-cart-status.draft{
+  background-color: rgba(55, 59, 83, 0.06);
+}
+
+.invoice-cart-status.draft span{
+  background-color: #373B53;
+}
+
+.invoice-cart-status.draft p{
+  color: #373B53;
+}
+
+.empty-invoices-container{
+  height: calc(100vh - 223px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-invoices-container img{
+  margin-bottom: 42px;
+}
+
+.empty-invoices-container h1{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 22.08px;
+  letter-spacing: -0.75px;
+  color: var(--08-text-color);
+  margin-bottom: 24px;
+}
+
+.empty-invoices-container p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  text-align: center;
+  color: var(--06-gray);
+}
+
+.empty-invoices-container span{
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  text-align: center;
+}
+
+/* InvoicesContainer css */
+
+/* GoBackButton css */
+
+.go-back-btn{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  margin-bottom: 31px;
+  cursor: pointer;
+}
+
+.go-back-btn img{
+  rotate: 90deg;
+  position: relative;
+  top: -1.5px;
+}
+
+/* GoBackButton css */
+
+/* InvoiceDetails css */
+
+.invoice-details-container{
+  padding-bottom: 0;
+}
+
+.invoice-status{
+  background-color: var(--14-white);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.invoice-status p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--15-text-gray);
+}
+
+.invoice-detail-container{
+  background-color: var(--14-white);
+  border-radius: 8px;
+  margin-bottom: 56px;
+  padding: 24px;
+}
+
+.invoice-detail-container p.description{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+  margin-bottom: 30px;
+  margin-top: 4px;
+}
+
+.bill-from{
+  margin-bottom: 31px;
+}
+
+.bill-from p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+}
+
+.invoice-detail-container-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.invoice-date{
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.invoice-date-item p, .sent-to p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+  margin-bottom: 10px;
+}
+
+.invoice-date-item p:last-child, .sent-to p:last-child{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  margin-bottom: 0;
+}
+
+.bill-to p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+}
+
+.bill-to p.name{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  margin-top: 13px;
+  margin-bottom: 7px;
+}
+
+.sent-to{
+  margin-bottom: 38px;
+}
+
+.payment{
+  background-color: #F9FAFE;
+  border-radius: 8px;
+}
+
+.payment-items{
+  padding: 25px 24px 23px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.payment-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.payment-item-wrapper p, .payment-item p.price{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  margin-bottom: 8px;
+}
+
+.payment-item-wrapper p:last-child{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--07-grayish-blue);
+  margin-bottom: 0;
+}
+
+.payment-item p.price{
+  margin-bottom: 0;
+}
+
+.grand-total{
+  background-color: #373B53;
+  border-radius: 0 0 8px 8px;
+  padding: 26px 24px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grand-total p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
+  color: var(--14-white);
+}
+
+.grand-total p:last-child{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+  text-align: right;
+}
+
+.invoice-detail-buttons{
+  background-color: var(--14-white);
+  padding: 21px 24px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.invoice-detail-buttons .edit-btn{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--07-grayish-blue);
+  padding: 18px 23px 15px 24px;
+  background-color: #F9FAFE;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.invoice-detail-buttons .delete-btn{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--14-white);
+  background-color: var(--09-red);
+  padding: 18px 25px 15px 24px;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.invoice-detail-buttons .mark-btn{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--14-white);
+  background-color: var(--01-purple);
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  padding: 18px 28px 15px 27px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.invoice-detail-buttons .edit-btn.pending-btn, .invoice-detail-buttons .delete-btn.pending-btn{
+  width: 100%;
+}
+
+.modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content{
+  background-color: var(--14-white);
+  border-radius: 8px;
+  padding: 34px 32px 32px;
+  margin-inline: 24px;
+}
+
+.modal-content h2{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+  color: var(--08-text-color);
+  margin-bottom: 8px;
+}
+
+.modal-content p{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 22px;
+  letter-spacing: -0.1px;
+  color: var(--06-gray);
+  margin-bottom: 22px;
+}
+
+.modal-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+}
+
+.modal-buttons button{
+  padding: 18px 24px 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--07-grayish-blue);
+  background-color: #F9FAFE;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.modal-buttons a{
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--14-white);
+  background-color: var(--09-red);
+  padding: 18px 25px 15px 24px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+/* InvoiceDetails css */
+
+/* EditInvoice css */
+
+.edit-invoice-container{
+  background-color: var(--14-white);
+  overflow-y: auto;
+  height: calc(100dvh - 163px);
+  padding: 33px 24px;
+}
+
+.edit-invoice-container h1{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+  color: var(--08-text-color);
+  margin-bottom: 22px;
+}
+
+.edit-invoice-container h1 span{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+  color: var(--07-grayish-blue);
+}
+
+.bill-from-form, .bill-to-form{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 41px;
+}
+
+.bill-from-form h2, .bill-to-form h2{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--01-purple);
+}
+
+.bill-from-form-input .bill-from-form-input-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bill-from-form-input .bill-from-form-input-title h3, .payment-terms-input h3, .item-list-form .item h3{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+  margin-bottom: 9px;
+}
+
+.bill-from-form-input input, .item-list-form .item input{
+  width: 100%;
+  padding: 18px 20px 15px;
+  border: 1px solid var(--05-very-light-purple);
+  background-color: transparent;
+  color: var(--08-text-color);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.bill-from-form-input input:focus{
+  border-color: var(--01-purple);
+}
+
+.bill-from-form-input.error input{
+  border-color: var(--09-red);
+}
+
+.bill-from-form-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 23px;
+}
+
+.dates, .dates-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.dates{
+  margin-bottom: 69px;
+}
+
+.invoice-date-input-disabled{
+  opacity: 0.5;
+}
+
+.invoice-date-input-disabled h3{
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.1px;
+  color: var(--07-grayish-blue);
+  margin-bottom: 9px;
+}
+
+.invoice-date-input{
+  position: relative;
+  padding: 18px 20px 15px;
+  border: 1px solid var(--05-very-light-purple);
+  border-radius: 4px;
+}
+
+.invoice-date-input p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+}
+
+.invoice-date-input img{
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+
+.payment-terms-input{
+  position: relative;
+}
+
+.payment-terms-input button{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 20px 15px;
+  background-color: transparent;
+  border: 1px solid var(--05-very-light-purple);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.payment-terms-input.selecting button{
+  border-color: var(--01-purple);
+}
+
+.payment-terms-input button img{
+  transition: rotate 0.5s;
+}
+
+.payment-terms-input.selecting button img{
+  rotate: 180deg;
+}
+
+.payment-terms-input button p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+}
+
+.payment-terms-input.selecting .payment-terms-input-drop-down-menu{
+  display: block;
+  position: absolute;
+  top: 81px;
+  left: 0;
+  background-color: var(--14-white);
+  width: 100%;
+  padding: 0 24px;
+  box-shadow: 0px 10px 20px 0px #48549F40;
+  border-radius: 8px;
+}
+
+.payment-terms-input.selecting .payment-terms-input-drop-down-menu p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--08-text-color);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--05-very-light-purple);
+}
+
+.payment-terms-input.selecting .payment-terms-input-drop-down-menu p:last-child{
+  border: none;
+}
+
+.payment-terms-input .payment-terms-input-drop-down-menu{
+  display: none;
+}
+
+.item-list-form h2{
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: -0.38px;
+  color: #777F98;
+  margin-bottom: 22px;
+}
+
+.item-list-form .item{
+  margin-bottom: 48px;
+}
+
+.item-list-form .item .item-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 25px;
+}
+
+.item-list-form .item .item-wrapper img{
+  margin-left: 52px;
+  margin-top: 22px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.item-list-form .item .item-wrapper .item-total{
+  align-self: self-start;
+}
+
+.item-list-form .item .item-wrapper .item-total h3{
+  margin-bottom: 27px;
+}
+
+.item-list-form .item .item-wrapper .item-total p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--06-gray);
+}
+
+.item-list-form button{
+  padding: 18px 20px 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--07-grayish-blue);
+  width: 100%;
+  background-color: #F9FAFE;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.error-text{
+  display: none;
+}
+
+.edit-invoice-buttons{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--14-white);
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  padding: 21px 24px 22px;
+}
+
+.edit-invoice-buttons a{
+  text-decoration: none;
+  padding: 18px 26.5px 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--07-grayish-blue);
+  background-color: #F9FAFE;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.edit-invoice-buttons button{
+  color: var(--14-white);
+  background-color: var(--01-purple);
+  padding: 18px 24px 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* EditInvoice css */
+
