@@ -832,7 +832,7 @@ table {
   opacity: 0.5;
 }
 
-.invoice-date-input-disabled h3{
+.invoice-date-input-disabled h3, .invoice-date-input-active h3{
   font-weight: 500;
   font-size: 13px;
   line-height: 15px;
@@ -1036,3 +1036,121 @@ table {
 
 /* EditInvoice css */
 
+/* CreateInvoice css */
+
+.invoice-date-input-active{
+  position: relative;
+}
+
+.date-picker{
+  position: absolute;
+  right: 0;
+  top: 82px;
+  background-color: var(--14-white);
+  z-index: 5;
+  padding: 26px 19px 31px;
+  border-radius: 8px;
+  box-shadow: 0px 10px 20px 0px #48549F40;
+  width: inherit;
+  display: none;
+}
+
+.invoice-date-input-active.selecting .date-picker{
+  display: block;
+}
+
+.date-picker-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 5px;
+  margin-bottom: 32px;
+}
+
+.date-picker-header p{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--08-text-color);
+  position: relative;
+  top: 2px;
+}
+
+.prev-month{
+  rotate: 90deg;
+  cursor: pointer;
+}
+
+.next-month{
+  rotate: -90deg;
+  cursor: pointer;
+}
+
+.date-picker-btns{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px 14px;
+}
+
+.date-picker-btns button{
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--08-text-color);
+  border: none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.create-invoice-buttons{
+  background-color: var(--14-white);
+  padding: 21px 24px 22px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  justify-content: center;
+}
+
+.create-invoice-buttons a{
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--07-grayish-blue);
+  padding: 18px 19px 15px 18px;
+  background-color: #F9FAFE;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.create-invoice-buttons button{
+  padding: 18px 15px 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  color: var(--14-white);
+  background-color: var(--01-purple);
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.create-invoice-buttons button.draft-btn{
+  color: var(--06-gray);
+  background-color: #373B53;
+}
+
+/* CreateInvoice css */

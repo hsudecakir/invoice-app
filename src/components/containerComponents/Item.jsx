@@ -11,16 +11,16 @@ export default function Item({ item, deleteItem }){
           <h3>Item Name</h3>
           <p className="error-text">Required</p>
         </div>
-        <input type="text" name="itemName" defaultValue={item.itemName} />
+        <input type="text" name="itemName" placeholder="e.g., Banner Design" defaultValue={item.itemName} />
       </div>
       <div className="item-wrapper">
         <div className="item-input">
           <h3>Qty.</h3>
-          <input type="number" name="quantity" defaultValue={item.quantity} onChange={(e) => setQuantity(e.target.value)} />
+          <input type="number" name="quantity" placeholder="e.g., 1, 2, etc." defaultValue={item.quantity} onChange={(e) => setQuantity(e.target.value)} />
         </div>
         <div className="item-input">
           <h3>Price</h3>
-          <input type="number" name="price" defaultValue={item.price} onChange={(e) => setPrice(e.target.value)} />
+          <input type="number" name="price" placeholder="e.g., 200.00" defaultValue={item.price} onChange={(e) => setPrice(e.target.value)} />
         </div>
         <div className="item-total">
           <h3>Total</h3>
