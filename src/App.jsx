@@ -8,6 +8,7 @@ export const DataContext = createContext(null);
 export default function App() {
 
   const [ data, setData ] = useState([]);
+  const [ theme, setTheme ] = useState('light');
 
   useEffect(() => {
     async function fetchData() {
@@ -15,12 +16,20 @@ export default function App() {
       setData(invoices);
     }
     fetchData();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if(theme == 'dark'){
+      document.body.classList.add('dark-mode');
+    } else{
+      document.body.classList.remove('dark-mode');
+    }
+  }, [theme]);
   
   return (
     <>
       <DataContext.Provider value={{ data, setData}}>
-        <Header />
+        <Header theme={theme} setTheme={setTheme} />
         <Container />
       </DataContext.Provider>
     </>
