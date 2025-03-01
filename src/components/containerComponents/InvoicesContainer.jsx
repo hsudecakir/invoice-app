@@ -13,9 +13,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
 
   if(!data.invoices) return null;
 
-  const allStatus = new Set(data.invoices.map(invoice => invoice.status));
-
-  const status = ['All', ...allStatus];
+  const status = ['All', 'Paid', 'Pending', 'Draft'];
 
   function closeModal(e){
     if(e.target.className == 'edit-modal'){
@@ -28,7 +26,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
     <div className="invoices-info-container">
       <div className="invoices-info">
         <h2>Invoices</h2>
-        <p>{data.invoices.length == 0 ? 'No' : screenSize == 'mobile' ? data.invoices.length : `There are ${data.invoices.length} total`} invoices</p>
+        <p>{data.invoices.filter(invoice => filterBy == 'All' ? invoice.status.includes('') : invoice.status.includes(filterBy)).map(x => x).length == 0 ? 'No' : screenSize == 'mobile' ? data.invoices.filter(invoice => filterBy == 'All' ? invoice.status.includes('') : invoice.status.includes(filterBy)).map(x => x).length : `There are ${data.invoices.filter(invoice => filterBy == 'All' ? invoice.status.includes('') : invoice.status.includes(filterBy)).map(x => x).length} total`} invoices</p>
       </div>
       <div className="invoices-action-buttons">
         <div className={`filter-btn-container ${isSelecting ? 'active' : ''}`}>
@@ -40,7 +38,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
         {screenSize == 'mobile' ? <a onClick={() => setCurrentRoute('create-invoice')} href="#/create-invoice"><span><img src="/images/plus-icon.svg" alt="Plus Icon" /></span> <p>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</p></a> : <button className="new-invoice-btn" onClick={() => setIsModalOpen(true)}><span><img src="/images/plus-icon.svg" alt="Plus Icon" /></span> <p>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</p></button>}
       </div>
     </div>
-    {data.invoices?.length > 0 ? 
+    {data.invoices.filter(invoice => filterBy == 'All' ? invoice.status.includes('') : invoice.status.includes(filterBy)).map(x => x).length > 0 ? 
       <div className="invoice-carts-container">
         {data.invoices.filter(invoice => filterBy == 'All' ? invoice.status.includes('') : invoice.status.includes(filterBy)).map(invoice => (
           <div key={invoice.id} className="invoice-cart">
