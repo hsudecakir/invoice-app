@@ -4,12 +4,14 @@ import Container from './components/Container'
 import Header from './components/Header'
 
 export const DataContext = createContext(null);
+export const RouteContext = createContext(null);
 export const ScreenContext = createContext(null);
 
 export default function App() {
 
   const [ data, setData ] = useState([]);
-  const [ theme, setTheme ] = useState('light');
+  const [ currentRoute, setCurrentRoute ] = useState(window.location.hash.split('/')[1] || '');
+  const [ theme, setTheme ] = useState(localStorage.theme || window.matchMedia(('(prefers-color-scheme : dark)')).matches && 'dark' || 'light');
   const [ screenSize, setScreenSize ] = useState(getScreenSize());
 
   useEffect(() => {
@@ -17,7 +19,11 @@ export default function App() {
       const invoices = await fetch('/data/data.json').then(res => res.json());
       setData(invoices);
     }
-    fetchData();
+    if(localStorage.invoices){
+      setData(JSON.parse(localStorage.invoices));
+    } else{
+      fetchData();
+    }
   }, []);
 
   useEffect(() => {
@@ -50,10 +56,12 @@ export default function App() {
   return (
     <>
       <DataContext.Provider value={{ data, setData}}>
-        <ScreenContext.Provider value={{ screenSize }}>
-          <Header theme={theme} setTheme={setTheme} />
-          <Container />
-        </ScreenContext.Provider>
+        <RouteContext.Provider value={{ currentRoute, setCurrentRoute }}>
+          <ScreenContext.Provider value={{ screenSize }}>
+            <Header theme={theme} setTheme={setTheme} />
+            <Container />
+          </ScreenContext.Provider>
+        </RouteContext.Provider>
       </DataContext.Provider>
     </>
   )

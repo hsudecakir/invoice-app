@@ -3,12 +3,13 @@ import { DataContext, ScreenContext } from "../../App";
 import CreateInvoice from "./CreateInvoice";
 
 export default function InvoicesContainer({ setCurrentRoute }){
-  const { data, setData } = useContext(DataContext);
+  const { data } = useContext(DataContext);
   const { screenSize } = useContext(ScreenContext);
 
   const [ filterBy, setFilterBy ] = useState('All');
   const [ isSelecting, setIsSelecting ] = useState(false);
   const [ isModalOpen, setIsModalOpen ] = useState(false);
+  
 
   if(!data.invoices) return null;
 
@@ -51,7 +52,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
               <div className="invoice-cart-body">
                 <div className="invoice-cart-body-wrapper">
                   <p>{screenSize == 'mobile' ? `Due ${invoice.paymentDue}` : invoice.billTo.clientName}</p>
-                  <p className="price">£ {Number(invoice.grandTotal.toFixed(2)).toLocaleString('en-GB')}</p>
+                  <p className="price">£ {invoice.grandTotal.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
                 <div className="invoice-cart-status-container">
                   <div className={`invoice-cart-status ${invoice.status.toLowerCase()}`}><span></span><p>{invoice.status}</p></div>

@@ -36,6 +36,7 @@ export default function InvoiceDetails({ setCurrentRoute }){
 
   function handleDelete(){
     setData({ invoices: data.invoices.filter(invoice => invoice.id != id)});
+    localStorage.invoices = JSON.stringify({ invoices: data.invoices.filter(invoice => invoice.id != id)});
     setCurrentRoute('');
   }
 
@@ -51,6 +52,7 @@ export default function InvoiceDetails({ setCurrentRoute }){
     }
 
     setData(updatedData);
+    localStorage.invoices = JSON.stringify(updatedData);
   }
 
   function closeModal(e){
@@ -141,23 +143,23 @@ export default function InvoiceDetails({ setCurrentRoute }){
                     {screenSize == 'mobile' ? (
                       <>
                         <p>{item.itemName}</p>
-                        <p>{item.quantity} x £ {item.price.toLocaleString('en-GB')}</p>
+                        <p>{item.quantity} x £ {item.price.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                       </>) : 
                       (
                         <>
                           <p>{item.quantity}</p>
-                          <p>£ {item.price.toLocaleString('en-GB')}</p>
-                          <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB')}</p>
+                          <p>£ {item.price.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                          <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                         </>
                       )}
                   </div>
-                  {screenSize == 'mobile' ? <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB')}</p> : <p className="item-name">{item.itemName}</p>}
+                  {screenSize == 'mobile' ? <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p> : <p className="item-name">{item.itemName}</p>}
                 </div>
               ))}
             </div>
             <div className="grand-total">
               <p>{screenSize == 'mobile' ? 'Grand Total' : 'Amount Due'}</p>
-              <p>£ {invoice.grandTotal.toLocaleString('en-GB')}</p>
+              <p>£ {invoice.grandTotal.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </div>
           </div>
         </div>

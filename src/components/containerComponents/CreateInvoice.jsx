@@ -19,6 +19,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
   const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
   const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
   const [ isClosing, setIsClosing ] = useState(false);
+  
 
   useEffect(() => {
     if(data) setLoading(false);
@@ -63,9 +64,21 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
       if (items.length == 0) {
           setIsItemsEmpty(true);
       } else {
-          if (form.itemName.value.trim() == '') errorSet.add('itemName');
-          if (form.quantity.value == 0) errorSet.add('quantity');
-          if (form.price.value == 0) errorSet.add('price');
+        const itemNames = form.querySelectorAll('[name="itemName"]');
+        const quantities = form.querySelectorAll('[name="quantity"]');
+        const prices = form.querySelectorAll('[name="price"]');
+
+        itemNames.forEach((itemName, index) => {
+            if (itemName.value.trim() == '') errorSet.add(`itemName-${items[index].id}`);
+        });
+
+        quantities.forEach((quantity, index) => {
+            if (quantity.value == 0) errorSet.add(`quantity-${items[index].id}`);
+        });
+
+        prices.forEach((price, index) => {
+            if (price.value == 0) errorSet.add(`price-${items[index].id}`);
+        });
       }
 
       setNewError(Array.from(errorSet));
@@ -150,6 +163,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
     }
 
     setData(updatedData);
+    localStorage.invoices = JSON.stringify(updatedData);
     if(screenSize == 'mobile'){
       setCurrentRoute('');
       window.location.hash = `#/`;

@@ -1,14 +1,12 @@
-import { useContext, useState } from "react";
-import { DataContext } from "../App";
+import { useContext } from "react";
+import { RouteContext } from "../App";
 import InvoicesContainer from "./containerComponents/InvoicesContainer";
 import CreateInvoice from "./containerComponents/CreateInvoice";
 import InvoiceDetails from "./containerComponents/InvoiceDetails";
 import EditInvoice from "./containerComponents/EditInvoice";
 
 export default function Container() {
-  const { data, setData } = useContext(DataContext);
-  
-  const [ currentRoute, setCurrentRoute ] = useState(window.location.hash.split('/')[1] || '');
+  const { currentRoute, setCurrentRoute } = useContext(RouteContext);
 
   const routes = [
     {

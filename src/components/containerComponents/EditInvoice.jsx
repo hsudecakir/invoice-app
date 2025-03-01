@@ -63,12 +63,25 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
 
       setIsFieldEmpty(true);
 
+      
       if (invoice.items.length == 0) {
           setIsItemsEmpty(true);
-      } else {
-          if (form.itemName.value.trim() == '') errorSet.add('itemName');
-          if (form.quantity.value == 0) errorSet.add('quantity');
-          if (form.price.value == 0) errorSet.add('price');
+      } else{
+        const itemNames = form.querySelectorAll('[name="itemName"]');
+        const quantities = form.querySelectorAll('[name="quantity"]');
+        const prices = form.querySelectorAll('[name="price"]');
+
+        itemNames.forEach((itemName, index) => {
+            if (itemName.value.trim() == '') errorSet.add(`itemName-${invoice.items[index].id}`);
+        });
+
+        quantities.forEach((quantity, index) => {
+            if (quantity.value == 0) errorSet.add(`quantity-${invoice.items[index].id}`);
+        });
+
+        prices.forEach((price, index) => {
+            if (price.value == 0) errorSet.add(`price-${invoice.items[index].id}`);
+        });
       }
 
       setNewError(Array.from(errorSet));
@@ -143,10 +156,12 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
     }
 
     setData(updatedData);
+    localStorage.invoices = JSON.stringify(updatedData);
     if(screenSize == 'mobile'){
       setCurrentRoute('invoice-details');
       window.location.hash = `#/invoice-details/${id}`;
     } else{
+      console.log('çalışıyor')
       setIsClosing(true);
       setTimeout(() => {
         setIsEditModalOpen(false);
@@ -254,7 +269,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                   <h3>Client’s Email</h3>
                   <p className="error-text">Required</p>
                 </div>
-                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientEmail" defaultValue={invoice.billTo.clientEmail} />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" defaultValue={invoice.billTo.clientEmail} />
               </div>
               <div className={`bill-from-form-input ${newError.includes('billToStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
@@ -318,7 +333,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                   <h3>Project Description</h3>
                   <p className="error-text">Required</p>
                 </div>
-                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="description" defaultValue={invoice.description} />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="description" placeholder="e.g. Graphic Design Service" defaultValue={invoice.description} />
               </div>
             </div>
             <div className="item-list-form">
