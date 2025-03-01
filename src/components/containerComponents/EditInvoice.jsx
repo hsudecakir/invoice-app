@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import GoBackBtn from "./GoBackBtn";
-import { DataContext } from "../../App";
+import { DataContext, ScreenContext } from "../../App";
 import Item from "./Item";
 
-export default function EditInvoice({ setCurrentRoute }){
+export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
   const { data, setData } = useContext(DataContext);
+  const { screenSize } = useContext(ScreenContext);
+
   const [ invoice, setInvoice ] = useState(null);
   const [ loading, setLoading ] = useState(true);
   const [ id, setId ] = useState(window.location.hash.split('/')[2] || null);
@@ -100,8 +102,12 @@ export default function EditInvoice({ setCurrentRoute }){
     }
 
     setData(updatedData);
-    setCurrentRoute('invoice-details');
-    window.location.hash = `#/invoice-details/${id}`;
+    if(screenSize == 'mobile'){
+      setCurrentRoute('invoice-details');
+      window.location.hash = `#/invoice-details/${id}`;
+    } else{
+      setIsEditModalOpen(false);
+    }
   }
 
   function selectPaymentTerm(paymentTerm){
@@ -145,7 +151,7 @@ export default function EditInvoice({ setCurrentRoute }){
       (<h1>Loading...</h1>) : 
       (
         <div className="edit-invoice-container">
-          <GoBackBtn setCurrentRoute={setCurrentRoute} route={`invoice-details/${id}`} />
+          {screenSize == 'mobile' ? <GoBackBtn setCurrentRoute={setCurrentRoute} route={`invoice-details/${id}`} /> : ''}
           <h1>Edit <span>#</span>{id}</h1>
           <form onSubmit={handleSubmit}>
             <div className="bill-from-form">
@@ -172,14 +178,23 @@ export default function EditInvoice({ setCurrentRoute }){
                   </div>
                   <input type="text" name="billFromPostCode" defaultValue={invoice.billFrom.postCode} />
                 </div>
+                {screenSize !== 'mobile' ? 
+                (<div className="bill-from-form-input">
+                  <div className="bill-from-form-input-title">
+                    <h3>Country</h3>
+                    <p className="error-text">Required</p>
+                  </div>
+                  <input type="text" name="billFromCountry" defaultValue={invoice.billFrom.country} />
+                </div>) : ''}
               </div>
-              <div className="bill-from-form-input">
+              {screenSize == 'mobile' ? 
+              (<div className="bill-from-form-input">
                 <div className="bill-from-form-input-title">
                   <h3>Country</h3>
                   <p className="error-text">Required</p>
                 </div>
                 <input type="text" name="billFromCountry" defaultValue={invoice.billFrom.country} />
-              </div>
+              </div>) : ''}
             </div>
             <div className="bill-to-form">
               <h2>Bill To</h2>
@@ -219,14 +234,23 @@ export default function EditInvoice({ setCurrentRoute }){
                   </div>
                   <input type="text" name="billToPostCode" defaultValue={invoice.billTo.postCode} />
                 </div>
-              </div>
-              <div className="bill-from-form-input">
-                <div className="bill-from-form-input-title">
+                {screenSize !== 'mobile' ? 
+                (<div className="bill-from-form-input">
+                  <div className="bill-from-form-input-title">
                     <h3>Country</h3>
+                    <p className="error-text">Required</p>
+                  </div>
+                  <input type="text" name="billToCountry" defaultValue={invoice.billTo.country} />
+                </div>) : ''}
+              </div>
+              {screenSize == 'mobile' ? 
+              (<div className="bill-from-form-input">
+                <div className="bill-from-form-input-title">
+                  <h3>Country</h3>
                   <p className="error-text">Required</p>
                 </div>
                 <input type="text" name="billToCountry" defaultValue={invoice.billTo.country} />
-              </div>
+              </div>) : ''}
             </div>
             <div className="dates">
               <div className="dates-wrapper">
@@ -255,11 +279,21 @@ export default function EditInvoice({ setCurrentRoute }){
             </div>
             <div className="item-list-form">
               <h2>Item List</h2>
+              {screenSize !== 'mobile' && ( 
+                <div className="item-list-form-header">
+                  <p>Item Name</p>
+                  <div className="item-list-form-header-wrapper">
+                    <p>Qty.</p>
+                    <p>Price</p>
+                    <p>Total</p>
+                  </div>
+                </div> 
+              )}
               {invoice.items.map(x => <Item item={x} key={x.id} deleteItem={deleteItem} />)}
               <button type="button" onClick={addNewItem}>+ Add New Item</button>
             </div>
             <div className="edit-invoice-buttons">
-              <a onClick={() =>setCurrentRoute('invoice-details')} href={`#/invoice-details/${id}`}>Cancel</a>
+              {screenSize == 'mobile' ? <a onClick={() => setCurrentRoute('invoice-details')} href={`#/invoice-details/${id}`}>Cancel</a> : <button type="button" onClick={() => setIsEditModalOpen(false)}>Cancel</button>}
               <button type="submit">Save Changes</button>
             </div>
           </form>

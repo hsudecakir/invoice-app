@@ -1,13 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../App";
+import { DataContext, ScreenContext } from "../../App";
 import GoBackBtn from "./GoBackBtn";
+import EditInvoice from "./EditInvoice";
 
 export default function InvoiceDetails({ setCurrentRoute }){
   const { data, setData } = useContext(DataContext);
+  const { screenSize } = useContext(ScreenContext);
+
   const [ invoice, setInvoice ] = useState(null);
   const [ id, setId ] = useState(window.location.hash.split('/')[2] || null);
   const [ loading, setLoading ] = useState(true);
   const [ isModalOpen, setIsModalOpen ] = useState(false);
+  const [ isEditModalOpen, setIsEditModalOpen ] = useState(false);
   
   useEffect(() => {
     const updateId = () => {
@@ -49,6 +53,12 @@ export default function InvoiceDetails({ setCurrentRoute }){
     setData(updatedData);
   }
 
+  function closeModal(e){
+    if(e.target.className == 'edit-modal'){
+      setIsEditModalOpen(false);
+    }
+  }
+
   return(
     <>
     {loading ? (
@@ -58,17 +68,28 @@ export default function InvoiceDetails({ setCurrentRoute }){
       <div className="invoice-details-container">
         <GoBackBtn setCurrentRoute={setCurrentRoute} route={''} />
         <div className="invoice-status">
-          <p>Status</p>
-          <div className={`invoice-cart-status ${invoice?.status?.toLowerCase()}`}><span></span><p>{invoice?.status}</p></div>
+          <div className="invoice-status-wrapper">
+            <p>Status</p>
+            <div className={`invoice-cart-status ${invoice?.status?.toLowerCase()}`}><span></span><p>{invoice?.status}</p></div>
+          </div>
+          <div className="invoice-detail-buttons invoice-detail-buttons--tablet">
+            <button onClick={() => setIsEditModalOpen(true)} className={`edit-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Edit</button>
+            <button onClick={handleClick} className={`delete-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Delete</button>
+            {invoice.status === 'Pending' ? <button className="mark-btn" onClick={markAsPaid}>Mark as Paid</button> : null}
+          </div>
         </div>
         <div className="invoice-detail-container">
-          <p className="id"><span>#</span>{invoice.id}</p>
-          <p className="description">{invoice.description}</p>
-          <div className="bill-from">
-            <p>{invoice.billFrom.streetAddress}</p>
-            <p>{invoice.billFrom.city}</p>
-            <p>{invoice.billFrom.postCode}</p>
-            <p>{invoice.billFrom.country}</p>
+          <div className="invoice-detail-container-top">
+            <div className="invoice-detail-container-top-wrapper">
+              <p className="id"><span>#</span>{invoice.id}</p>
+              <p className="description">{invoice.description}</p>
+            </div>
+            <div className="bill-from">
+              <p>{invoice.billFrom.streetAddress}</p>
+              <p>{invoice.billFrom.city}</p>
+              <p>{invoice.billFrom.postCode}</p>
+              <p>{invoice.billFrom.country}</p>
+            </div>
           </div>
           <div className="invoice-detail-container-wrapper">
             <div className="invoice-date">
@@ -89,30 +110,59 @@ export default function InvoiceDetails({ setCurrentRoute }){
               <p>{invoice.billTo.postCode}</p>
               <p>{invoice.billTo.country}</p>
             </div>
+            {screenSize !== 'mobile' && (
+              <div className="sent-to">
+                <p>Sent to</p>
+                <p>{invoice.billTo.clientEmail}</p>
+              </div>
+            )}
           </div>
-          <div className="sent-to">
-            <p>Sent to</p>
-            <p>{invoice.billTo.clientEmail}</p>
-          </div>
+          {screenSize == 'mobile' && (
+            <div className="sent-to">
+              <p>Sent to</p>
+              <p>{invoice.billTo.clientEmail}</p>
+            </div>
+          )}
           <div className="payment">
+            {screenSize !== 'mobile' && ( 
+              <div className="payment-items-header">
+                <p>Item Name</p>
+                <div className="payment-items-header-wrapper">
+                  <p>QTY.</p>
+                  <p>Price</p>
+                  <p>Total</p>
+                </div>
+              </div> 
+            )}
             <div className="payment-items">
               {invoice.items.map((item, index) => (
                 <div key={index} className="payment-item">
                   <div className="payment-item-wrapper">
-                    <p>{item.itemName}</p>
-                    <p>{item.quantity} x £ {item.price.toLocaleString('en-GB')}</p>
+                    {screenSize == 'mobile' ? (
+                      <>
+                        <p>{item.itemName}</p>
+                        <p>{item.quantity} x £ {item.price.toLocaleString('en-GB')}</p>
+                      </>) : 
+                      (
+                        <>
+                          <p>{item.quantity}</p>
+                          <p>£ {item.price.toLocaleString('en-GB')}</p>
+                          <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB')}</p>
+                        </>
+                      )}
                   </div>
-                  <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB')}</p>
-                </div>))}
+                  {screenSize == 'mobile' ? <p className="price">£ {(item.price * item.quantity).toLocaleString('en-GB')}</p> : <p className="item-name">{item.itemName}</p>}
+                </div>
+              ))}
             </div>
             <div className="grand-total">
-              <p>Grand Total</p>
+              <p>{screenSize == 'mobile' ? 'Grand Total' : 'Amount Due'}</p>
               <p>£ {invoice.grandTotal.toLocaleString('en-GB')}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="invoice-detail-buttons">
+      <div className="invoice-detail-buttons invoice-detail-buttons--mobile">
         <a href={`#/edit-invoice/${id}`} onClick={() => setCurrentRoute('edit-invoice')} className={`edit-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Edit</a>
         <button onClick={handleClick} className={`delete-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Delete</button>
         {invoice.status === 'Pending' ? <button className="mark-btn" onClick={markAsPaid}>Mark as Paid</button> : null}
@@ -128,6 +178,7 @@ export default function InvoiceDetails({ setCurrentRoute }){
           </div>
         </div>
       </div> : null}
+      {isEditModalOpen && <div onClick={closeModal} className="edit-modal"><EditInvoice setIsEditModalOpen={setIsEditModalOpen} /></div>}
       </>
     )}
     </>
