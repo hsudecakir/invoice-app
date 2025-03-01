@@ -904,8 +904,8 @@ body.dark-mode .modal-content h2{
 .edit-invoice-container{
   background-color: var(--14-white);
   overflow-y: auto;
-  height: calc(100dvh - 163px);
-  padding: 33px 24px;
+  height: calc(100dvh - 80px);
+  padding: 33px 24px 0;
 }
 
 body.dark-mode .edit-invoice-container{
@@ -1369,8 +1369,8 @@ body.dark-mode .date-picker-btns button{
 
 .create-invoice-buttons{
   background-color: var(--14-white);
-  padding: 21px 24px 22px;
-  position: absolute;
+  padding: 21px 0 22px;
+  position: sticky;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -1775,8 +1775,8 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .edit-invoice-container{
-    height: calc(100dvh - 160px);
-    padding: 56px 59px 47px;
+    height: calc(100dvh - 80px);
+    padding: 56px 59px 0;
     border-radius: 0 20px 0 0;
     max-width: 616px;
   }
@@ -1870,11 +1870,11 @@ input[type="number"]::-webkit-outer-spin-button {
   }
   
   .edit-invoice-buttons{
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
-    width: 616.5px;
-    padding: 31px 56px;
+    width: 504px;
+    padding: 31px 0;
     border-radius: 0 0 20px 0;
   }
 
@@ -1898,11 +1898,8 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .create-invoice-buttons{
-    padding: 31px 56px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 616px;
+    padding: 31px 0 31px;
+    width: 504px;
     display: flex;
     align-items: center;
     gap: 7px;
@@ -1963,9 +1960,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
   /* CreateInvoice css */
 
-.edit-invoice-container{
-  animation: openSidebar 2s ;
-}
+  .edit-invoice-container{
+    animation: openSidebar 0.5s ease;
+  }
+
+  .edit-invoice-container.closing{
+    animation: closeSidebar 0.3s ease;
+  }
 
 }
 
@@ -1991,6 +1992,7 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: column;
     border-radius: 0 20px 20px 0;
     padding-bottom: 24px;
+    z-index: 1000;
   }
 
   .header-wrapper{
@@ -2042,20 +2044,12 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .edit-invoice-container{
-    height: calc(100dvh - 110px);
-  }
-
-  .edit-invoice-buttons{
-    left: 80px;
+    height: calc(100dvh);
   }
 
   /* EditInvoice css */
 
   /* CreateInvoice css */
-
-  .create-invoice-buttons{
-    left: 80px;
-  }
 
   .create-invoice-buttons-wrapper{
     gap: 8px;
@@ -2201,6 +2195,23 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* desktop css */
 
+@keyframes openSidebar {
+  0% {
+    transform: translateX(-616px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes closeSidebar {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-616px);
+  }
+}
 
 
 

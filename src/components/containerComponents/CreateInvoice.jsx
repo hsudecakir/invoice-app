@@ -18,6 +18,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
   const [ newError, setNewError ] = useState([]);
   const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
   const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
+  const [ isClosing, setIsClosing ] = useState(false);
 
   useEffect(() => {
     if(data) setLoading(false);
@@ -153,7 +154,10 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
       setCurrentRoute('');
       window.location.hash = `#/`;
     } else{
-      setIsModalOpen(false);
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsModalOpen(false);
+      }, 300);
     }
   }
 
@@ -193,7 +197,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
       {loading ? 
       (<h1>Loading...</h1>) : 
       (
-        <div className="edit-invoice-container">
+        <div className={`edit-invoice-container ${isClosing && 'closing'}`}>
           {screenSize == 'mobile' && <GoBackBtn setCurrentRoute={setCurrentRoute} route={''} />}
           <h1>New Invoice</h1>
           <form onSubmit={handleSubmit}>
@@ -343,7 +347,10 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
               </div> 
             : ''}
             <div className="create-invoice-buttons">
-              {screenSize == 'mobile' ? <a onClick={() =>setCurrentRoute('')} href='#/'>Discard</a> : <button className="discard-btn" type="button" onClick={() => setIsModalOpen(false)}>Discard</button> }
+              {screenSize == 'mobile' ? <a onClick={() =>setCurrentRoute('')} href='#/'>Discard</a> : <button className="discard-btn" type="button" onClick={() => {setIsClosing(true);
+              setTimeout(() => {
+                setIsModalOpen(false);
+              }, 300)}}>Discard</button> }
               <div className="create-invoice-buttons-wrapper">
                 <button className="draft-btn" type="submit" value={'Draft'}>Save as Draft</button>
                 <button type="submit" value={'Pending'}>Save & Send</button>

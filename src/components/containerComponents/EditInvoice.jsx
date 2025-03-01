@@ -14,6 +14,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
   const [ newError, setNewError ] = useState([]);
   const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
   const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
+  const [ isClosing, setIsClosing ] = useState(false);
 
   useEffect(() => {
     const updateId = () => {
@@ -146,7 +147,10 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
       setCurrentRoute('invoice-details');
       window.location.hash = `#/invoice-details/${id}`;
     } else{
-      setIsEditModalOpen(false);
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsEditModalOpen(false);
+      }, 300);
     }
   }
 
@@ -190,7 +194,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
       {loading ? 
       (<h1>Loading...</h1>) : 
       (
-        <div className="edit-invoice-container">
+        <div className={`edit-invoice-container ${isClosing && 'closing'}`}>
           {screenSize == 'mobile' ? <GoBackBtn setCurrentRoute={setCurrentRoute} route={`invoice-details/${id}`} /> : ''}
           <h1>Edit <span>#</span>{id}</h1>
           <form onSubmit={handleSubmit}>
@@ -339,7 +343,10 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               </div> 
             : ''}
             <div className="edit-invoice-buttons">
-              {screenSize == 'mobile' ? <a onClick={() => setCurrentRoute('invoice-details')} href={`#/invoice-details/${id}`}>Cancel</a> : <button type="button" onClick={() => setIsEditModalOpen(false)}>Cancel</button>}
+              {screenSize == 'mobile' ? <a onClick={() => setCurrentRoute('invoice-details')} href={`#/invoice-details/${id}`}>Cancel</a> : <button type="button" onClick={() =>{setIsClosing(true);
+              setTimeout(() => {
+                setIsEditModalOpen(false);
+              }, 300);}}>Cancel</button>}
               <button type="submit">Save Changes</button>
             </div>
           </form>
