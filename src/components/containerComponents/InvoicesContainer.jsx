@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { DataContext, ScreenContext } from "../../App";
+import CreateInvoice from "./CreateInvoice";
 
 export default function InvoicesContainer({ setCurrentRoute }){
   const { data, setData } = useContext(DataContext);
@@ -7,12 +8,19 @@ export default function InvoicesContainer({ setCurrentRoute }){
 
   const [ filterBy, setFilterBy ] = useState('All');
   const [ isSelecting, setIsSelecting ] = useState(false);
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
 
   if(!data.invoices) return null;
 
   const allStatus = new Set(data.invoices.map(invoice => invoice.status));
 
   const status = ['All', ...allStatus];
+
+  function closeModal(e){
+    if(e.target.className == 'edit-modal'){
+      setIsModalOpen(false);
+    }
+  }
 
   return(
     <div className="invoices-container">
@@ -28,7 +36,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
             {status.length > 1 ? status.map(x => <label key={x} htmlFor={x}><input onChange={() => {setFilterBy(x); setIsSelecting(false)}} checked={x == filterBy} type="radio" name="filter" id={x} /> <span className="checkbox"></span> {x}</label>) : 'No invoices'}
           </div>
         </div>
-        <a onClick={() => setCurrentRoute('create-invoice')} href="#/create-invoice"><span><img src="/images/plus-icon.svg" alt="Plus Icon" /></span> <p>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</p></a>
+        {screenSize == 'mobile' ? <a onClick={() => setCurrentRoute('create-invoice')} href="#/create-invoice"><span><img src="/images/plus-icon.svg" alt="Plus Icon" /></span> <p>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</p></a> : <button className="new-invoice-btn" onClick={() => setIsModalOpen(true)}><span><img src="/images/plus-icon.svg" alt="Plus Icon" /></span> <p>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</p></button>}
       </div>
     </div>
     {data.invoices?.length > 0 ? 
@@ -47,7 +55,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
                 </div>
                 <div className="invoice-cart-status-container">
                   <div className={`invoice-cart-status ${invoice.status.toLowerCase()}`}><span></span><p>{invoice.status}</p></div>
-                  <img src="/images/arrow-down.svg" />
+                  {screenSize !== 'mobile' && <img src="/images/arrow-down.svg" />}
                 </div>
               </div>
             </a>
@@ -60,6 +68,7 @@ export default function InvoicesContainer({ setCurrentRoute }){
         <p>Create an invoice by clicking the <br /> <span>{screenSize == 'mobile' ? 'New' : 'New Invoice'}</span> button and get started</p>
       </div>
     }
+    {isModalOpen && <div onClick={closeModal} className="edit-modal"><CreateInvoice setIsModalOpen={setIsModalOpen} /></div>}
     </div>
   )
 }

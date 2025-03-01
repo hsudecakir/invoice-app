@@ -1,28 +1,33 @@
 import { useContext, useState, useEffect } from "react";
-import { DataContext } from "../../App";
+import { DataContext, ScreenContext } from "../../App";
 import GoBackBtn from "./GoBackBtn";
 import Item from "./Item";
 import DatePicker from "./DatePicker";
 
-export default function CreateInvoice({ setCurrentRoute }){
+export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
 
   const { data, setData } = useContext(DataContext);
+  const { screenSize } = useContext(ScreenContext);
+
   const [ loading, setLoading ] = useState(true);
   const [ isSelecting, setIsSelecting ] = useState(false);
-  const [ items, setItems ] = useState([{
-          "id": 1,
-          "itemName": "",
-          "quantity": 0,
-          "price": 0,
-          "total": 0
-        }]);
+  const [ items, setItems ] = useState([]);
   const [ paymentTerm, setPaymentTerm ] = useState('Net 1 Day');
   const [ isSelectingDate, setIsSelectingDate ] = useState(false);
   const [ invoiceDate, setInvoiceDate ] = useState(new Date().toDateString().split(' '));
+  const [ newError, setNewError ] = useState([]);
+  const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
+  const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
 
   useEffect(() => {
     if(data) setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if(newError.length == 0){
+      setIsFieldEmpty(false);
+    }
+  }, [newError])
 
   const paymentTerms = ['Net 1 Day', 'Net 7 Days', 'Net 14 Days', 'Net 30 Days'];
 
@@ -34,6 +39,38 @@ export default function CreateInvoice({ setCurrentRoute }){
 
   function handleSubmit(e){
     e.preventDefault();
+
+    const form = e.target;
+
+    if(form.description.value.trim() == '' || form.billFromStreetAddress.value.trim() == '' || form.billFromCity.value.trim() == '' || form.billFromPostCode.value.trim() == '' || form.billFromCountry.value.trim() == '' || form.billToClientName.value.trim() == '' || form.billToClientEmail.value.trim() == '' || form.billToStreetAddress.value.trim() == '' || form.billToCity.value.trim() == '' || form.billToPostCode.value.trim() == '' || form.billToCountry.value.trim() == '' || items.length == 0 || form.itemName.value.trim() == '' || form.quantity.value == 0 || form.price == 0){
+      const errorSet = new Set();
+
+      if (form.description.value.trim() == '') errorSet.add('description');
+      if (form.billFromStreetAddress.value.trim() == '') errorSet.add('billFromStreetAddress');
+      if (form.billFromCity.value.trim() == '') errorSet.add('billFromCity');
+      if (form.billFromPostCode.value.trim() == '') errorSet.add('billFromPostCode');
+      if (form.billFromCountry.value.trim() == '') errorSet.add('billFromCountry');
+      if (form.billToClientName.value.trim() == '') errorSet.add('billToClientName');
+      if (form.billToClientEmail.value.trim() == '') errorSet.add('billToClientEmail');
+      if (form.billToStreetAddress.value.trim() == '') errorSet.add('billToStreetAddress');
+      if (form.billToCity.value.trim() == '') errorSet.add('billToCity');
+      if (form.billToPostCode.value.trim() == '') errorSet.add('billToPostCode');
+      if (form.billToCountry.value.trim() == '') errorSet.add('billToCountry');
+
+      setIsFieldEmpty(true);
+
+      if (items.length == 0) {
+          setIsItemsEmpty(true);
+      } else {
+          if (form.itemName.value.trim() == '') errorSet.add('itemName');
+          if (form.quantity.value == 0) errorSet.add('quantity');
+          if (form.price.value == 0) errorSet.add('price');
+      }
+
+      setNewError(Array.from(errorSet));
+      return;
+    }
+
     const action = e.nativeEvent.submitter.value;
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -51,7 +88,6 @@ export default function CreateInvoice({ setCurrentRoute }){
     const monthName = months[parseInt(month) - 1];
     paymentDue = `${parseInt(day)} ${monthName} ${year}`; 
 
-    const form = e.target;
     const itemInputs = Array.from(form.elements).filter(
       (element) => element.name.startsWith("itemName") ||
                   element.name.startsWith("quantity") ||
@@ -112,11 +148,13 @@ export default function CreateInvoice({ setCurrentRoute }){
       ]
     }
 
-    console.log(newInvoice);
-
     setData(updatedData);
-    setCurrentRoute('');
-    window.location.hash = `#/`;
+    if(screenSize == 'mobile'){
+      setCurrentRoute('');
+      window.location.hash = `#/`;
+    } else{
+      setIsModalOpen(false);
+    }
   }
 
   function selectPaymentTerm(x){
@@ -128,7 +166,7 @@ export default function CreateInvoice({ setCurrentRoute }){
     const updatedItems = [
         ...items,
         {
-          "id": items[items.length - 1].id + 1,
+          "id": items.length !== 0 ? items[items.length - 1].id + 1 : 1,
           "itemName": "",
           "quantity": 0,
           "price": 0,
@@ -136,14 +174,13 @@ export default function CreateInvoice({ setCurrentRoute }){
         }
       ]
     setItems(updatedItems);
+    setIsItemsEmpty(false);
   }
 
   function deleteItem(item){
-    const updatedInvoice = {
-      ...invoice,
-      items: invoice.items.filter(x => x.id !== item.id)
-    }
-    setInvoice(updatedInvoice);
+    const updatedItems = items.filter(x => x.id !== item.id);
+    if(updatedItems.length == 0) setIsItemsEmpty(true);
+    setItems(updatedItems);
   }
 
   function selectDate(selectedDate){
@@ -157,88 +194,106 @@ export default function CreateInvoice({ setCurrentRoute }){
       (<h1>Loading...</h1>) : 
       (
         <div className="edit-invoice-container">
-          <GoBackBtn setCurrentRoute={setCurrentRoute} route={''} />
+          {screenSize == 'mobile' && <GoBackBtn setCurrentRoute={setCurrentRoute} route={''} />}
           <h1>New Invoice</h1>
           <form onSubmit={handleSubmit}>
             <div className="bill-from-form">
               <h2>Bill From</h2>
-              <div className="bill-from-form-input">
+              <div className={`bill-from-form-input ${newError.includes('billFromStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Street Address</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="billFromStreetAddress" placeholder="e.g., 19 Union Terrace" />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromStreetAddress" />
               </div>
               <div className="bill-from-form-wrapper">
-                <div className="bill-from-form-input">
+                <div className={`bill-from-form-input ${newError.includes('billFromCity') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>City</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
-                  <input type="text" name="billFromCity" placeholder="e.g., London" />
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCity" />
                 </div>
-                <div className="bill-from-form-input">
+                <div className={`bill-from-form-input ${newError.includes('billFromPostCode') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Post Code</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
-                  <input type="text" name="billFromPostCode" placeholder="e.g., E1 3EZ" />
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromPostCode" />
                 </div>
+                {screenSize !== 'mobile' ? 
+                (<div className={`bill-from-form-input ${newError.includes('billFromCountry') && 'error'}`}>
+                  <div className="bill-from-form-input-title">
+                    <h3>Country</h3>
+                    <p className="error-text">can’t be empty</p>
+                  </div>
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCountry" />
+                </div>) : ''}
               </div>
-              <div className="bill-from-form-input">
+              {screenSize == 'mobile' ? 
+              (<div className={`bill-from-form-input ${newError.includes('billFromCountry') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Country</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="billFromCountry" placeholder="e.g., United Kingdom" />
-              </div>
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCountry" />
+              </div>) : ''}
             </div>
             <div className="bill-to-form">
               <h2>Bill To</h2>
-              <div className="bill-from-form-input">
+              <div className={`bill-from-form-input ${newError.includes('billToClientName') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Client’s Name</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="billToClientName" placeholder="e.g., Alex Grim" />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientName" />
               </div>
-              <div className="bill-from-form-input">
+              <div className={`bill-from-form-input ${newError.includes('billToClientEmail') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Client’s Email</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="billToClientEmail" placeholder="e.g., alexgrim@mail.com" />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" />
               </div>
-              <div className="bill-from-form-input">
+              <div className={`bill-from-form-input ${newError.includes('billToStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Street Address</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="billToStreetAddress" placeholder="e.g., 84 Church Way" />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToStreetAddress" />
               </div>
               <div className="bill-from-form-wrapper">
-                <div className="bill-from-form-input">
+                <div className={`bill-from-form-input ${newError.includes('billToCity') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>City</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
-                  <input type="text" name="billToCity" placeholder="e.g., Bradford" />
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCity" />
                 </div>
-                <div className="bill-from-form-input">
+                <div className={`bill-from-form-input ${newError.includes('billToPostCode') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Post Code</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
-                  <input type="text" name="billToPostCode" placeholder="e.g., BD1 9PB" />
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToPostCode" />
                 </div>
-              </div>
-              <div className="bill-from-form-input">
-                <div className="bill-from-form-input-title">
+                {screenSize !== 'mobile' ? 
+                (<div className={`bill-from-form-input ${newError.includes('billToCountry') && 'error'}`}>
+                  <div className="bill-from-form-input-title">
                     <h3>Country</h3>
-                  <p className="error-text">Required</p>
-                </div>
-                <input type="text" name="billToCountry" placeholder="e.g., United Kingdom" />
+                    <p className="error-text">can’t be empty</p>
+                  </div>
+                  <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCountry" />
+                </div>) : ''}
               </div>
+              {screenSize == 'mobile' ? 
+              (<div className={`bill-from-form-input ${newError.includes('billToCountry') && 'error'}`}>
+                <div className="bill-from-form-input-title">
+                  <h3>Country</h3>
+                  <p className="error-text">can’t be empty</p>
+                </div>
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCountry" />
+              </div>) : ''}
             </div>
             <div className="dates">
               <div className="dates-wrapper">
@@ -258,23 +313,41 @@ export default function CreateInvoice({ setCurrentRoute }){
                   </div>
                 </div>
               </div>
-              <div className="bill-from-form-input">
+              <div className={`bill-from-form-input ${newError.includes('description') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Project Description</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
-                <input type="text" name="description" placeholder="e.g., Graphic Design" />
+                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="description" placeholder="e.g. Graphic Design Service" />
               </div>
             </div>
             <div className="item-list-form">
               <h2>Item List</h2>
-              {items.map(x => <Item item={x} key={x.id} deleteItem={deleteItem} />)}
+              {screenSize !== 'mobile' && ( 
+                <div className="item-list-form-header">
+                  <p>Item Name</p>
+                  <div className="item-list-form-header-wrapper">
+                    <p>Qty.</p>
+                    <p>Price</p>
+                    <p>Total</p>
+                  </div>
+                </div> 
+              )}
+              {items.map(x => <Item item={x} key={x.id} deleteItem={deleteItem} newError={newError} setNewError={setNewError} />)}
               <button type="button" onClick={addNewItem}>+ Add New Item</button>
             </div>
+            {isFieldEmpty || isItemsEmpty ? 
+              <div className="empty-error-texts">
+                {isFieldEmpty && <p className="field-error-text">- All fields must be added</p> }
+                {isItemsEmpty && <p className="field-error-text">- An item must be added</p> }
+              </div> 
+            : ''}
             <div className="create-invoice-buttons">
-              <a onClick={() =>setCurrentRoute('')} href='#/'>Discard</a>
-              <button className="draft-btn" type="submit" value={'Draft'}>Save as Draft</button>
-              <button type="submit" value={'Pending'}>Save & Send</button>
+              {screenSize == 'mobile' ? <a onClick={() =>setCurrentRoute('')} href='#/'>Discard</a> : <button className="discard-btn" type="button" onClick={() => setIsModalOpen(false)}>Discard</button> }
+              <div className="create-invoice-buttons-wrapper">
+                <button className="draft-btn" type="submit" value={'Draft'}>Save as Draft</button>
+                <button type="submit" value={'Pending'}>Save & Send</button>
+              </div>
             </div>
           </form>
         </div>

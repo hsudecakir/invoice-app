@@ -162,6 +162,7 @@ body.dark-mode .invoices-info p{
 
 .filter-btn-container{
   position: relative;
+  transition: rotate 0.5s;
 }
 
 .filter-btn-container .drop-down-menu{
@@ -200,6 +201,14 @@ body.dark-mode .filter-btn-container button{
   padding: 24px;
   border-radius: 8px;
   box-shadow: 0px 10px 20px 0px #48549F40;
+}
+
+.filter-btn-container.active img{
+  rotate: 180deg;
+}
+
+.filter-btn-container img{
+  transition: rotate 0.5s;
 }
 
 body.dark-mode .filter-btn-container.active .drop-down-menu{
@@ -928,7 +937,6 @@ body.dark-mode .edit-invoice-container h1 span{
   color: #777f98;
 }
 
-
 .bill-from-form, .bill-to-form{
   display: flex;
   flex-direction: column;
@@ -948,6 +956,7 @@ body.dark-mode .edit-invoice-container h1 span{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 9px;
 }
 
 .bill-from-form-input .bill-from-form-input-title h3, .payment-terms-input h3, .item-list-form .item h3{
@@ -957,6 +966,10 @@ body.dark-mode .edit-invoice-container h1 span{
   letter-spacing: -0.1px;
   color: var(--07-grayish-blue);
   margin-bottom: 9px;
+}
+
+.bill-from-form-input .bill-from-form-input-title h3{
+  margin-bottom: 0;
 }
 
 body.dark-mode .bill-from-form-input .bill-from-form-input-title h3, body.dark-mode .payment-terms-input h3, body.dark-mode .item-list-form .item h3{
@@ -1208,6 +1221,10 @@ body.dark-mode .item-list-form button{
   display: none;
 }
 
+.empty-error-texts{
+  margin-top: 33px;
+}
+
 .edit-invoice-buttons{
   position: absolute;
   bottom: 0;
@@ -1222,7 +1239,7 @@ body.dark-mode .item-list-form button{
 }
 
 body.dark-mode .edit-invoice-buttons, body.dark-mode .create-invoice-buttons{
-  background-color: var(--03-very-dark-blue);
+  background-color: var(--12-black);
 }
 
 .edit-invoice-buttons a{
@@ -1283,6 +1300,10 @@ body.dark-mode .edit-invoice-buttons a, body.dark-mode .create-invoice-buttons a
 body.dark-mode .date-picker{
   background-color: var(--04-dark-blue);
   box-shadow: 0px 10px 20px 0px #00000040;
+}
+
+.invoice-date-input-active.selecting .invoice-date-input{
+  border-color: var(--01-purple);
 }
 
 .invoice-date-input-active.selecting .date-picker{
@@ -1359,6 +1380,12 @@ body.dark-mode .date-picker-btns button{
   justify-content: center;
 }
 
+.create-invoice-buttons-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .create-invoice-buttons a{
   text-decoration: none;
   font-weight: 700;
@@ -1391,6 +1418,15 @@ body.dark-mode .date-picker-btns button{
   background-color: #373B53;
 }
 
+.bill-from-form-input.error .error-text, .field-error-text{
+  display: block;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: -0.21px;
+  color: var(--09-red);
+}
+
 body.dark-mode .create-invoice-buttons button.draft-btn{
   color: var(--05-very-light-purple);
   background-color: #373B53;
@@ -1398,6 +1434,16 @@ body.dark-mode .create-invoice-buttons button.draft-btn{
 
 body.dark-mode input::placeholder{
   color: rgba(255, 255, 255, 0.5);
+}
+
+.item-input.error input{
+  border-color: var(--09-red);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* CreateInvoice css */
@@ -1815,7 +1861,8 @@ body.dark-mode input::placeholder{
   }
 
   .qty-input{
-    padding-inline: 18px !important;
+    padding-inline: 10px !important;
+    text-align: center;
   }
 
   .item-list-form .item .item-wrapper .item-total{
@@ -1847,143 +1894,313 @@ body.dark-mode input::placeholder{
 
   .invoice-date-input-active{
     position: relative;
-  }
-
-  .date-picker{
-    position: absolute;
-    right: 0;
-    top: 82px;
-    background-color: var(--14-white);
-    z-index: 5;
-    padding: 26px 19px 31px;
-    border-radius: 8px;
-    box-shadow: 0px 10px 20px 0px #48549F40;
-    width: inherit;
-    display: none;
-  }
-
-  body.dark-mode .date-picker{
-    background-color: var(--04-dark-blue);
-    box-shadow: 0px 10px 20px 0px #00000040;
-  }
-
-  .invoice-date-input-active.selecting .date-picker{
-    display: block;
-  }
-
-  .date-picker-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: 5px;
-    margin-bottom: 32px;
-  }
-
-  .date-picker-header p{
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 15px;
-    letter-spacing: -0.25px;
-    text-align: center;
-    color: var(--08-text-color);
-    position: relative;
-    top: 2px;
-  }
-
-  body.dark-mode .date-picker-header p{
-    color: var(--14-white);
-  }
-
-  .prev-month{
-    rotate: 90deg;
-    cursor: pointer;
-  }
-
-  .next-month{
-    rotate: -90deg;
-    cursor: pointer;
-  }
-
-  .date-picker-btns{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 16px 14px;
-  }
-
-  .date-picker-btns button{
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 15px;
-    letter-spacing: -0.25px;
-    text-align: center;
-    color: var(--08-text-color);
-    border: none;
-    outline: none;
-    padding: 0;
-    background-color: transparent;
-    cursor: pointer;
-  }
-
-  body.dark-mode .date-picker-btns button{
-    color: var(--14-white);
+    width: 100%;
   }
 
   .create-invoice-buttons{
-    background-color: var(--14-white);
-    padding: 21px 24px 22px;
-    position: absolute;
+    padding: 31px 56px;
+    position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 616px;
     display: flex;
     align-items: center;
     gap: 7px;
-    justify-content: center;
+    justify-content: space-between;
+    border-radius: 0 0 20px 0;
   }
 
-  .create-invoice-buttons a{
-    text-decoration: none;
+  .create-invoice-buttons-wrapper{
+    gap: 8px;
+  }
+
+  .create-invoice-buttons button.discard-btn{
     font-weight: 700;
     font-size: 15px;
     line-height: 15px;
     letter-spacing: -0.25px;
     color: var(--07-grayish-blue);
-    padding: 18px 19px 15px 18px;
+    padding: 18px 24px 15px 25px;
     background-color: #F9FAFE;
-    border-radius: 24px;
-    cursor: pointer;
-  }
-
-  .create-invoice-buttons button{
-    padding: 18px 15px 15px;
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 15px;
-    letter-spacing: -0.25px;
-    color: var(--14-white);
-    background-color: var(--01-purple);
     border-radius: 24px;
     border: none;
     outline: none;
     cursor: pointer;
   }
 
-  .create-invoice-buttons button.draft-btn{
-    color: var(--06-gray);
-    background-color: #373B53;
+  .invoices-action-buttons .new-invoice-btn{
+    padding: 6px 15px 6px 6px;
+    background-color: var(--01-purple);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
-
-  body.dark-mode .create-invoice-buttons button.draft-btn{
-    color: var(--05-very-light-purple);
-    background-color: #373B53;
+  
+  .invoices-action-buttons .new-invoice-btn span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--14-white);
   }
-
-  body.dark-mode input::placeholder{
-    color: rgba(255, 255, 255, 0.5);
+  
+  .invoices-action-buttons .new-invoice-btn p{
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 15px;
+    letter-spacing: -0.25px;
+    color: var(--14-white);
+    text-align: center;
+    position: relative;
+    top: 2px;
   }
 
   /* CreateInvoice css */
+
+.edit-invoice-container{
+  animation: openSidebar 2s ;
+}
+
 }
 
 /* tablet css */
+
+/* desktop css */
+
+@media only screen and (min-width: 1280px){
+
+  .all-in-container{
+    display: flex;
+    position: relative;
+  }
+
+  /* header css */
+
+  .header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    padding-right: 0;
+    flex-direction: column;
+    border-radius: 0 20px 20px 0;
+    padding-bottom: 24px;
+  }
+
+  .header-wrapper{
+    gap: 32px;
+    flex-direction: column;
+  }
+
+  .header-wrapper span.divider{
+    height: 1px;
+    width: 80px;
+  }
+
+  /* header css */
+
+  /* container css */
+
+  /* InvoicesContainer css */
+
+  .container{
+    max-width: 730px;
+    margin: 0 auto;
+  }
+
+  .filter-btn-container.active .drop-down-menu{
+    right: inherit;
+    left: -37px;
+  }
+
+  .invoice-cart{
+    border: 1px solid transparent;
+  }
+
+  .invoices-container, .invoice-details-container{
+    padding: 65px 0 15px;
+  }
+
+  .invoices-info-container{
+    margin-bottom: 64px;
+  }
+
+  /* InvoicesContainer css */
+
+  /* EditInvoice css */
+
+  .edit-modal{
+    top: 0;
+    left: 80px;
+    height: 100dvh;
+  }
+
+  .edit-invoice-container{
+    height: calc(100dvh - 110px);
+  }
+
+  .edit-invoice-buttons{
+    left: 80px;
+  }
+
+  /* EditInvoice css */
+
+  /* CreateInvoice css */
+
+  .create-invoice-buttons{
+    left: 80px;
+  }
+
+  .create-invoice-buttons-wrapper{
+    gap: 8px;
+  }
+
+  .create-invoice-buttons button.discard-btn{
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 15px;
+    letter-spacing: -0.25px;
+    color: var(--07-grayish-blue);
+    padding: 18px 24px 15px 25px;
+    background-color: #F9FAFE;
+    border-radius: 24px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .invoices-action-buttons .new-invoice-btn{
+    padding: 6px 15px 6px 6px;
+    background-color: var(--01-purple);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .invoices-action-buttons .new-invoice-btn span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--14-white);
+  }
+  
+  .invoices-action-buttons .new-invoice-btn p{
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 15px;
+    letter-spacing: -0.25px;
+    color: var(--14-white);
+    text-align: center;
+    position: relative;
+    top: 2px;
+  }
+
+  .edit-invoice-container::-webkit-scrollbar {
+    width: 8px;
+    height: 112px;
+  }
+
+  .edit-invoice-container::-webkit-scrollbar-thumb {
+    background: var(--05-very-light-purple);
+    border-radius: 4px;
+  }
+
+  body.dark-mode .edit-invoice-container::-webkit-scrollbar-thumb {
+    background-color: var(--04-dark-blue);
+  }
+
+  .invoice-date-input{
+    cursor: pointer;
+  }
+
+  /* CreateInvoice css */
+
+  /* hovers */
+
+  .filter-btn-container button{
+    cursor: pointer;
+  }
+
+  .drop-down-menu label:hover span, body.dark-mode .drop-down-menu label:hover span{
+    border-color: var(--01-purple);
+    transition: all 0.5s;
+  }
+
+  .invoice-cart:hover{
+    border: 1px solid var(--01-purple);
+    transition: all 0.5s;
+  }
+
+  .invoices-action-buttons .new-invoice-btn:hover, .invoice-detail-buttons .mark-btn:hover, .create-invoice-buttons button:hover{
+    background-color: var(--02-light-puple);
+    transition: all 0.5s;
+  }
+
+  .go-back-btn:hover{
+    color: var(--07-grayish-blue);
+    transition: all 0.5s;
+  }
+
+  body.dark-mode .go-back-btn:hover{
+    color: var(--06-gray);
+    transition: all 0.5s;
+  }
+
+  .invoice-detail-buttons .delete-btn:hover, .modal-buttons a:hover{
+    background-color: var(--10-red-hover);
+    transition: all 0.5s;
+  }
+
+  .invoice-detail-buttons .edit-btn:hover, .create-invoice-buttons button.discard-btn:hover, body.dark-mode .create-invoice-buttons button.discard-btn:hover,  .modal-buttons button:hover{
+    background-color: var(--05-very-light-purple);
+    color: var(--07-grayish-blue);
+    transition: all 0.5s;
+  }
+
+  body.dark-mode .invoice-detail-buttons .edit-btn:hover, body.dark-mode .create-invoice-buttons button.discard-btn, body.dark-mode .modal-buttons button:hover{
+    background-color: var(--14-white);
+    color: var(--07-grayish-blue);
+    transition: all 0.5s;
+  }
+
+  .bill-from-form-input input:hover, .item-list-form .item input:hover, .payment-terms-input button:hover, .invoice-date-input:hover{
+    border-color: var(--01-purple);
+    transition: all 0.5s;
+  }
+
+  .date-picker-btns button:hover{
+    color: var(--01-purple);
+    transition: all 0.5s;
+  }
+
+  .create-invoice-buttons button.draft-btn:hover{
+    background-color: var(--08-text-color);
+    transition: all 0.5s;
+  }
+
+  body.dark-mode .create-invoice-buttons button.draft-btn:hover{
+    background-color: var(--03-very-dark-blue);
+    transition: all 0.5s;
+  }
+
+  /* hovers */
+}
+
+/* desktop css */
+
+
+
 
