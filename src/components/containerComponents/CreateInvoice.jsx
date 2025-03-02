@@ -214,7 +214,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
         <div className={`edit-invoice-container ${isClosing && 'closing'}`}>
           {screenSize == 'mobile' && <GoBackBtn setCurrentRoute={setCurrentRoute} route={''} />}
           <h1>New Invoice</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <div className="bill-from-form">
               <h2>Bill From</h2>
               <div className={`bill-from-form-input ${newError.includes('billFromStreetAddress') && 'error'}`}>
