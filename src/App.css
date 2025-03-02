@@ -1973,6 +1973,10 @@ input[type="number"]::-webkit-outer-spin-button {
     animation: closeSidebar 0.3s ease;
   }
 
+  .item-list-form button.edit-container-btn{
+    margin-bottom: 0;
+  }
+
 }
 
 /* tablet css */
