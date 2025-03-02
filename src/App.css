@@ -1138,6 +1138,7 @@ body.dark-mode .payment-terms-input.selecting .payment-terms-input-drop-down-men
   color: var(--08-text-color);
   padding: 16px 0;
   border-bottom: 1px solid var(--05-very-light-purple);
+  cursor: pointer;
 }
 
 body.dark-mode .payment-terms-input.selecting .payment-terms-input-drop-down-menu p{
