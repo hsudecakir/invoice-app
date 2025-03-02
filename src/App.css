@@ -1000,7 +1000,7 @@ body.dark-mode .bill-from-form-input input, body.dark-mode .item-list-form .item
   border-color: var(--01-purple);
 }
 
-.bill-from-form-input.error input{
+.bill-from-form-input.error input, body.dark-mode .bill-from-form-input.error input{
   border-color: var(--09-red);
 }
 
@@ -1211,6 +1211,10 @@ body.dark-mode .payment-terms-input.selecting .payment-terms-input-drop-down-men
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+.item-list-form button.edit-container-btn{
+  margin-bottom: 92px;
 }
 
 body.dark-mode .item-list-form button{
@@ -1437,7 +1441,7 @@ body.dark-mode input::placeholder{
   color: rgba(255, 255, 255, 0.5);
 }
 
-.item-input.error input{
+.item-input.error input, body.dark-mode .item-input.error input{
   border-color: var(--09-red);
 }
 

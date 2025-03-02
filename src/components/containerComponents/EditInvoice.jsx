@@ -349,7 +349,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                 </div> 
               )}
               {invoice.items.map(x => <Item item={x} key={x.id} deleteItem={deleteItem} newError={newError} setNewError={setNewError} />)}
-              <button type="button" onClick={addNewItem}>+ Add New Item</button>
+              <button className="edit-container-btn" type="button" onClick={addNewItem}>+ Add New Item</button>
             </div>
             {isFieldEmpty || isItemsEmpty ? 
               <div className="empty-error-texts">
