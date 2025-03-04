@@ -55,6 +55,21 @@ export default function InvoiceDetails({ setCurrentRoute }){
     localStorage.invoices = JSON.stringify(updatedData);
   }
 
+  function markAsPending(){
+    const updatedInvoice = {
+      ...invoice,
+      status: 'Pending'
+    }
+
+    const updatedData = {
+      ...data,
+      invoices: data.invoices.map(x => x.id == id ? updatedInvoice : x)
+    }
+
+    setData(updatedData);
+    localStorage.invoices = JSON.stringify(updatedData);
+  }
+
   function closeModal(e){
     if(e.target.className == 'edit-modal'){
       setIsEditModalOpen(false);
@@ -77,7 +92,8 @@ export default function InvoiceDetails({ setCurrentRoute }){
           <div className="invoice-detail-buttons invoice-detail-buttons--tablet">
             <button onClick={() => setIsEditModalOpen(true)} className={`edit-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Edit</button>
             <button onClick={handleClick} className={`delete-btn ${invoice.status !== 'Pending' ? 'pending-btn' : ''}`}>Delete</button>
-            {invoice.status === 'Pending' ? <button className="mark-btn" onClick={markAsPaid}>Mark as Paid</button> : null}
+            { invoice.status === 'Pending' ? <button className="mark-btn" onClick={markAsPaid}>Mark as Paid</button> : 
+              invoice.status === 'Draft' ? <button className="mark-btn" onClick={markAsPending}>Mark as Pending</button> : null}
           </div>
         </div>
         <div className="invoice-detail-container">

@@ -15,6 +15,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
   const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
   const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
   const [ isClosing, setIsClosing ] = useState(false);
+  const [ wrongFormat, setWrongFormat ] = useState(false);
 
   useEffect(() => {
     const updateId = () => {
@@ -46,7 +47,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
 
     const form = e.target;
 
-    if(form.description.value.trim() == '' || form.billFromStreetAddress.value.trim() == '' || form.billFromCity.value.trim() == '' || form.billFromPostCode.value.trim() == '' || form.billFromCountry.value.trim() == '' || form.billToClientName.value.trim() == '' || form.billToClientEmail.value.trim() == '' || form.billToStreetAddress.value.trim() == '' || form.billToCity.value.trim() == '' || form.billToPostCode.value.trim() == '' || form.billToCountry.value.trim() == '' || invoice.items.length == 0 || form.itemName.value.trim() == '' || form.quantity.value == 0 || form.price == 0){
+    if(form.description.value.trim() == '' || form.billFromStreetAddress.value.trim() == '' || form.billFromCity.value.trim() == '' || form.billFromPostCode.value.trim() == '' || form.billFromCountry.value.trim() == '' || form.billToClientName.value.trim() == '' || form.billToClientEmail.value.trim() == '' || form.billToStreetAddress.value.trim() == '' || form.billToCity.value.trim() == '' || form.billToPostCode.value.trim() == '' || form.billToCountry.value.trim() == '' || invoice.items.length == 0 || invoice.items.length == 1 && form.itemName.value.trim() == '' || invoice.items.length == 1 && form.quantity.value == 0 || invoice.items.length == 1 && form.price.value == 0 || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.value.trim() == '') || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.quantity == 0) || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.price == 0) || !form.billToClientEmail.value.includes('@')){
       const errorSet = new Set();
 
       if (form.description.value.trim() == '') errorSet.add('description');
@@ -56,6 +57,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
       if (form.billFromCountry.value.trim() == '') errorSet.add('billFromCountry');
       if (form.billToClientName.value.trim() == '') errorSet.add('billToClientName');
       if (form.billToClientEmail.value.trim() == '') errorSet.add('billToClientEmail');
+      if (form.billToClientEmail.value.trim() !== '' && !form.billToClientEmail.value.includes('@')) {setWrongFormat(true); errorSet.add('billToClientEmail');};
       if (form.billToStreetAddress.value.trim() == '') errorSet.add('billToStreetAddress');
       if (form.billToCity.value.trim() == '') errorSet.add('billToCity');
       if (form.billToPostCode.value.trim() == '') errorSet.add('billToPostCode');
@@ -161,7 +163,6 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
       setCurrentRoute('invoice-details');
       window.location.hash = `#/invoice-details/${id}`;
     } else{
-      console.log('çalışıyor')
       setIsClosing(true);
       setTimeout(() => {
         setIsEditModalOpen(false);
@@ -218,7 +219,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               <div className={`bill-from-form-input ${newError.includes('billFromStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Street Address</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromStreetAddress" defaultValue={invoice.billFrom.streetAddress} />
               </div>
@@ -226,14 +227,14 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                 <div className={`bill-from-form-input ${newError.includes('billFromCity') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>City</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCity" defaultValue={invoice.billFrom.city} />
                 </div>
                 <div className={`bill-from-form-input ${newError.includes('billFromPostCode') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Post Code</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromPostCode" defaultValue={invoice.billFrom.postCode} />
                 </div>
@@ -241,7 +242,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                 (<div className={`bill-from-form-input ${newError.includes('billFromCountry') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Country</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCountry" defaultValue={invoice.billFrom.country} />
                 </div>) : ''}
@@ -250,7 +251,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               (<div className={`bill-from-form-input ${newError.includes('billFromCountry') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Country</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billFromCountry" defaultValue={invoice.billFrom.country} />
               </div>) : ''}
@@ -260,21 +261,21 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               <div className={`bill-from-form-input ${newError.includes('billToClientName') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Client’s Name</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientName" defaultValue={invoice.billTo.clientName} />
               </div>
               <div className={`bill-from-form-input ${newError.includes('billToClientEmail') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Client’s Email</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">{wrongFormat ? 'wrong format' : 'can’t be empty'}</p>
                 </div>
-                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" defaultValue={invoice.billTo.clientEmail} />
+                <input onChange={(e) => {setNewError(newError.filter(x => x !== e.target.name)); setWrongFormat(false)}} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" defaultValue={invoice.billTo.clientEmail} />
               </div>
               <div className={`bill-from-form-input ${newError.includes('billToStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Street Address</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToStreetAddress" defaultValue={invoice.billTo.address} />
               </div>
@@ -282,14 +283,14 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                 <div className={`bill-from-form-input ${newError.includes('billToCity') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>City</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCity" defaultValue={invoice.billTo.city} />
                 </div>
                 <div className={`bill-from-form-input ${newError.includes('billToPostCode') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Post Code</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToPostCode" defaultValue={invoice.billTo.postCode} />
                 </div>
@@ -297,7 +298,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
                 (<div className={`bill-from-form-input ${newError.includes('billToCountry') && 'error'}`}>
                   <div className="bill-from-form-input-title">
                     <h3>Country</h3>
-                    <p className="error-text">Required</p>
+                    <p className="error-text">can’t be empty</p>
                   </div>
                   <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCountry" defaultValue={invoice.billTo.country} />
                 </div>) : ''}
@@ -306,7 +307,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               (<div className={`bill-from-form-input ${newError.includes('billToCountry') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Country</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToCountry" defaultValue={invoice.billTo.country} />
               </div>) : ''}
@@ -331,7 +332,7 @@ export default function EditInvoice({ setCurrentRoute, setIsEditModalOpen }){
               <div className={`bill-from-form-input ${newError.includes('description') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Project Description</h3>
-                  <p className="error-text">Required</p>
+                  <p className="error-text">can’t be empty</p>
                 </div>
                 <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="description" placeholder="e.g. Graphic Design Service" defaultValue={invoice.description} />
               </div>

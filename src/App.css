@@ -80,6 +80,10 @@ table {
   align-items: center;
   justify-content: space-between;
   padding-right: 24px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5000;
 }
 
 body.dark-mode .header{

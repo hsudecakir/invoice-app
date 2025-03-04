@@ -27,7 +27,13 @@ export default function Item({ item, deleteItem, newError, setNewError }){
         </div>
         <div className="item-total">
           {screenSize == 'mobile' && <h3>Total</h3>}
-          <p className="price">{(quantity * price).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          <p className="price">{(quantity * price) >= 1000000000
+            ? `${(quantity * price / 1000000000).toFixed(1)}B` 
+            : (quantity * price) >= 1000000
+            ? `${(quantity * price / 1000000).toFixed(1)}M` 
+            : quantity * price >= 10000
+              ? `${(quantity * price / 1000).toFixed(1)}K`
+              : (quantity * price).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
         </div>
         <img onClick={() => deleteItem(item)} src="/images/delete-icon.svg" alt="Delete Icon" />
       </div>

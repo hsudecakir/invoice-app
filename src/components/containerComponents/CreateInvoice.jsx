@@ -19,6 +19,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
   const [ isFieldEmpty, setIsFieldEmpty ] = useState(false);
   const [ isItemsEmpty, setIsItemsEmpty ] = useState(false);
   const [ isClosing, setIsClosing ] = useState(false);
+  const [ wrongFormat, setWrongFormat ] = useState(false);
   
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
 
     const form = e.target;
 
-    if(form.description.value.trim() == '' || form.billFromStreetAddress.value.trim() == '' || form.billFromCity.value.trim() == '' || form.billFromPostCode.value.trim() == '' || form.billFromCountry.value.trim() == '' || form.billToClientName.value.trim() == '' || form.billToClientEmail.value.trim() == '' || form.billToStreetAddress.value.trim() == '' || form.billToCity.value.trim() == '' || form.billToPostCode.value.trim() == '' || form.billToCountry.value.trim() == '' || items.length == 0 || form.itemName.value.trim() == '' || form.quantity.value == 0 || form.price == 0){
+    if(form.description.value.trim() == '' || form.billFromStreetAddress.value.trim() == '' || form.billFromCity.value.trim() == '' || form.billFromPostCode.value.trim() == '' || form.billFromCountry.value.trim() == '' || form.billToClientName.value.trim() == '' || form.billToClientEmail.value.trim() == '' || form.billToStreetAddress.value.trim() == '' || form.billToCity.value.trim() == '' || form.billToPostCode.value.trim() == '' || form.billToCountry.value.trim() == '' || items.length == 0 || invoice.items.length == 1 && form.itemName.value.trim() == '' || invoice.items.length == 1 && form.quantity.value == 0 || invoice.items.length == 1 && form.price.value == 0 || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.value.trim() == '') || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.quantity == 0) || invoice.items.length !== 0 && Array.from(form.itemName).some(x => x.price == 0) || !form.billToClientEmail.value.includes('@')){
       const errorSet = new Set();
 
       if (form.description.value.trim() == '') errorSet.add('description');
@@ -54,6 +55,7 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
       if (form.billFromCountry.value.trim() == '') errorSet.add('billFromCountry');
       if (form.billToClientName.value.trim() == '') errorSet.add('billToClientName');
       if (form.billToClientEmail.value.trim() == '') errorSet.add('billToClientEmail');
+      if (form.billToClientEmail.value.trim() !== '' && !form.billToClientEmail.value.includes('@')) {setWrongFormat(true); errorSet.add('billToClientEmail');};
       if (form.billToStreetAddress.value.trim() == '') errorSet.add('billToStreetAddress');
       if (form.billToCity.value.trim() == '') errorSet.add('billToCity');
       if (form.billToPostCode.value.trim() == '') errorSet.add('billToPostCode');
@@ -269,9 +271,9 @@ export default function CreateInvoice({ setCurrentRoute, setIsModalOpen }){
               <div className={`bill-from-form-input ${newError.includes('billToClientEmail') && 'error'}`}>
                 <div className="bill-from-form-input-title">
                   <h3>Client’s Email</h3>
-                  <p className="error-text">can’t be empty</p>
+                  <p className="error-text">{wrongFormat ? 'wrong format' : 'can’t be empty'}</p>
                 </div>
-                <input onChange={(e) => setNewError(newError.filter(x => x !== e.target.name))} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" />
+                <input onChange={(e) => {setNewError(newError.filter(x => x !== e.target.name)); setWrongFormat(false)}} type="text" name="billToClientEmail" placeholder="e.g. email@example.com" />
               </div>
               <div className={`bill-from-form-input ${newError.includes('billToStreetAddress') && 'error'}`}>
                 <div className="bill-from-form-input-title">
